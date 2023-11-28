@@ -1,9 +1,14 @@
+import 'package:adsparo_test/cubits/getAllUsersDataCubit.dart';
+import 'package:adsparo_test/data/models/UserModel.dart';
+import 'package:adsparo_test/data/repositories/Auth/authLocalDataSource.dart';
 import 'package:adsparo_test/ui/screens/auth/Widgets/setAddress.dart';
 import 'package:adsparo_test/ui/screens/auth/Widgets/setEthnicity.dart';
 import 'package:adsparo_test/ui/screens/auth/Widgets/setUpCountry.dart';
 import 'package:adsparo_test/ui/screens/auth/Widgets/setZipCode.dart';
 import 'package:adsparo_test/ui/widgets/button.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../../utils/uiUtils.dart';
@@ -44,6 +49,7 @@ class SetUpProfileState extends State<SetUpProfile> {
   String indicator = "+221";
   String num = "";
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  final service = SharedPreferencesServices();
 
   Widget hintTxt() {
     return Align(
@@ -191,6 +197,7 @@ class SetUpProfileState extends State<SetUpProfile> {
                     });
                   },
                 ),
+
               ),
             ),
             SetAddress(currFocus: addressSFocus, nextFocus: zipSFocus, addC: addressC!, address: addressC!.text, topPad: 30),
@@ -239,9 +246,21 @@ class SetUpProfileState extends State<SetUpProfile> {
                       width: ScreenUtil().screenWidth/2.6
                   ),
                   Btn(
-                      onTap: (){
+                      onTap: ()async{
+                        UserModel? uSer = service.getUserFromSharedPref();
+                        setState(() {
+                          num = "$indicator${phoneC?.text}";
+                        });
                         if (validateAndSave()) {
-
+                          var user = {
+                            'phoneNumber': num,
+                            'address': addressC?.text,
+                            'zipCode': zipC?.text,
+                            'age': ageC?.text,
+                            'ethnicity': ethnicityC?.text,
+                            'country': countryC?.text
+                          };
+                          updateUserInFirebase(uSer?.uid, user, context);
                         }
                       },
                       text: "submitBtn",
@@ -255,6 +274,18 @@ class SetUpProfileState extends State<SetUpProfile> {
         ),
       ),
     );
+  }
+
+  Future<void> updateUserInFirebase(String? uid, var user, BuildContext context) async{
+    try {
+      final db = FirebaseDatabase.instance.ref();
+      db.child("users/$uid").update(user).then((_){
+        context.read<GetAllUsersCubit>().getUsers(context: context);
+      });
+    }
+    catch(e){
+      debugPrint("exception =======> $e");
+    }
   }
 
   @override
@@ -272,5 +303,20 @@ class SetUpProfileState extends State<SetUpProfile> {
         );
       },
     );
+  }
+
+  disposeAllTextController() {
+    phoneC!.dispose();
+    addressC!.dispose();
+    ethnicityC!.dispose();
+    ageC!.dispose();
+    zipC!.dispose();
+    countryC!.dispose();
+  }
+
+  @override
+  void dispose() {
+    disposeAllTextController();
+    super.dispose();
   }
 }

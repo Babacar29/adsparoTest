@@ -59,11 +59,9 @@ class UiUtils {
   static userLogOut({required BuildContext contxt}) {
 
     for (int i = 0; i < AuthProviders.values.length; i++) {
-      if (AuthProviders.values[i].name == contxt.read<AuthCubit>().getType()) {
-        contxt.read<AuthCubit>().signOut(AuthProviders.values[i]).then((value) {
-          Navigator.of(contxt).pushNamedAndRemoveUntil(Routes.login, (route) => false);
-        });
-      }
+      contxt.read<AuthCubit>().signOut(AuthProviders.values[i]).then((value) {
+        Navigator.of(contxt).pushNamedAndRemoveUntil(Routes.login, (route) => false);
+      });
     }
   }
 

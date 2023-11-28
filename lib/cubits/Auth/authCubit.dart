@@ -52,10 +52,6 @@ class AuthCubit extends Cubit<AuthState> {
     return (state is Authenticated) ? (state as Authenticated).authModel.mobile! : "";
   }
 
-  String getType() {
-    return (state is Authenticated) ? (state as Authenticated).authModel.type! : "";
-  }
-
   String getStatus() {
     return (state is Authenticated) ? (state as Authenticated).authModel.status! : "";
   }

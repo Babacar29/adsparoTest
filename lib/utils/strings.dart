@@ -1,9 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
-const String ID = "id";
+const String ID = "uid";
 const String NAME = "name";
 const String EMAIL = "email";
-const String TYPE = "type";
+const String COUNTRY = "country";
 const String URL = "url";
 const String STATUS = "status";
 const String FCM_ID = "fcm_id";
@@ -16,20 +16,20 @@ const String CATEGORY_ID = "category_id";
 const String CONTENT_TYPE = "content_type";
 const String SHOW_TILL = "show_till";
 const String CONTENT_VALUE = "content_value";
-const String DATE = "date";
-const String TITLE = "title";
+const String ETHNICITY = "ethnicity";
+const String AGE = "age";
 const String DESCRIPTION = "description";
 const String IMAGE = "image";
 const String CATEGORY_NAME = "category_name";
-const String NEWS_ID = "news_id";
+const String ZIPCODE = "zipCode";
 const String BR_NEWS_ID = "breaking_news_id";
 const String USER_ID = "user_id";
 const String OFFSET = "offset";
 const String LIMIT = "limit";
 const String USER_NEWS = "get_user_news";
-const String MESSAGE = "message";
+const String PHONENUMBER = "phoneNumber";
 const String COUNTER = "counter";
-const String DATE_SENT = "date_sent";
+const String ADDRESS = "address";
 const String OTHER_IMAGE = "other_image";
 const String IMAGE_DATA = "image_data";
 const String COMMENT_ID = "comment_id";

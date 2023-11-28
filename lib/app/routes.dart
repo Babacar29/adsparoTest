@@ -2,7 +2,6 @@ import 'package:adsparo_test/ui/screens/SetUpProfile/setUpProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../ui/screens/HomePage/HomePage.dart';
 import '../ui/screens/auth/ForgotPassword.dart';
 import '../ui/screens/auth/loginScreen.dart';
 import '../ui/screens/introSlider.dart';
@@ -28,10 +27,6 @@ class Routes {
       case introSlider:
         {
           return CupertinoPageRoute(builder: (_) => const IntroSliderScreen());
-        }
-      case home:
-        {
-          return HomeScreen.route(routeSettings);
         }
       case setUpProfile:
         {

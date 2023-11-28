@@ -12,38 +12,36 @@ import '../cubits/Auth/authCubit.dart';
 import '../cubits/Auth/deleteUserCubit.dart';
 import '../cubits/Auth/registerTokenCubit.dart';
 import '../cubits/Auth/updateUserCubit.dart';
-import '../cubits/appSystemSettingCubit.dart';
-import '../cubits/getUserDataByIdCubit.dart';
+import '../cubits/getAllUsersDataCubit.dart';
 import '../cubits/languageCubit.dart';
 import '../cubits/languageJsonCubit.dart';
-import '../data/repositories/AppSystemSetting/systemRepository.dart';
-import '../data/repositories/Auth/authRepository.dart';
-import '../data/repositories/GetUserById/getUserByIdRepository.dart';
+import '../data/repositories/Auth/authLocalDataSource.dart';
+import '../data/repositories/GetAllUsers/getAllUsersRepository.dart';
 import '../data/repositories/LanguageJson/languageJsonRepository.dart';
+import '../data/repositories/Auth/authRepository.dart';
 import '../data/repositories/language/languageRepository.dart';
 import '../utils/uiUtils.dart';
 
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesServices.init();
   HttpOverrides.global = MyHttpOverrides();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
 
   await Firebase.initializeApp();
 
   //await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
 
   runApp(MultiBlocProvider(providers: [
-    BlocProvider<AppConfigurationCubit>(create: (context) => AppConfigurationCubit(SystemRepository())),
     BlocProvider<LanguageJsonCubit>(create: (_) => LanguageJsonCubit(LanguageJsonRepository())),
     BlocProvider<LanguageCubit>(create: (context) => LanguageCubit(LanguageRepository())),
     BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
     BlocProvider<RegisterTokenCubit>(create: (_) => RegisterTokenCubit(AuthRepository())),
     BlocProvider<UpdateUserCubit>(create: (_) => UpdateUserCubit(AuthRepository())),
     BlocProvider<DeleteUserCubit>(create: (_) => DeleteUserCubit(AuthRepository())),
-    BlocProvider<GetUserByIdCubit>(create: (_) => GetUserByIdCubit(GetUserByIdRepository())),
-    BlocProvider<FirebaseAuthCubit>(create: (_) => FirebaseAuthCubit(AuthRepository())),
+    BlocProvider<GetAllUsersCubit>(create: (_) => GetAllUsersCubit(GetAllUsersRepository(), SharedPreferencesServices())),
+    BlocProvider<FirebaseAuthCubit>(create: (_) => FirebaseAuthCubit(AuthRepository(), SharedPreferencesServices())),
 
   ], child: const MyApp()));
 }
