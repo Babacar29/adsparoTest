@@ -55,6 +55,7 @@ class GetAllUsersCubit extends Cubit<GetAllUsersState> {
         if(connectedUser != null){
           debugPrint("connected user ==>$connectedUser");
           debugPrint("users ==>$users");
+          _sharedPreferences.setFirstLogin(true);
           emit(GetAllUsersFetchSuccess());
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:adsparo_test/cubits/getAllUsersDataCubit.dart';
 import 'package:adsparo_test/data/models/UserModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -59,6 +60,7 @@ class FirebaseAuthCubit extends Cubit<FirebaseAuthState> {
   //to socialFirebaseAuth user
   void firebaseAuthUser({ required BuildContext context, String? email, String? password}) async{
     emit(FirebaseAuthProgress());
+    bool? isFirstLogin = _sharedPreferencesServices.checkIfFirstLogin();
       await _authRepository.signInUser(email: email, password: password, context: context).then((result) {
         if(result?.user?.displayName != null && result?.user?.emailVerified == true){
           UserModel user = UserModel(
@@ -67,9 +69,15 @@ class FirebaseAuthCubit extends Cubit<FirebaseAuthState> {
             name: result?.user?.displayName,
           );
           _sharedPreferencesServices.setUserInSharedPref(user);
-          insertUserToFirebase(user.uid, user.toMap());
-          emit(FirebaseAuthSuccess(userCredential: result));
-          Navigator.pushNamedAndRemoveUntil(context, Routes.setUpProfile, (route) => false);
+          //emit(FirebaseAuthSuccess(userCredential: result));
+          if(isFirstLogin != null && isFirstLogin){
+            context.read<GetAllUsersCubit>().getUsers(context: context);
+          }
+          else{
+            insertUserToFirebase(user.uid, user.toMap()).then((value) {
+              Navigator.pushNamedAndRemoveUntil(context, Routes.setUpProfile, (route) => false);
+            });
+          }
         }
     }).catchError((e) {
       emit(FirebaseAuthFailure(e.toString()));

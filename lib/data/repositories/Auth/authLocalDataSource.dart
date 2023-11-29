@@ -29,4 +29,18 @@ class SharedPreferencesServices {
   setUserInSharedPref(UserModel user) {
     _prefs.setString("user", json.encode(user.toMap()));
   }
+
+  bool? checkIfFirstLogin() {
+    if (!_prefs.containsKey('FirstLogin')) {
+      //_prefs.setBool("Welcome", true);
+      return false;
+    }
+    else {
+      return _prefs.getBool('FirstLogin');
+    }
+  }
+
+  void setFirstLogin(bool firstLogin) {
+    _prefs.setBool("FirstLogin", firstLogin);
+  }
 }
