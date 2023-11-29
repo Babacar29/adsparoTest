@@ -2,7 +2,6 @@
 import 'package:adsparo_test/data/models/UserModel.dart';
 import 'package:adsparo_test/ui/screens/EditUser/editUser.dart';
 import 'package:adsparo_test/ui/styles/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,15 +30,6 @@ class HomeScreenState extends State<HomeScreen> {
 */
 
   @override
-  void initState() {
-    if (context.read<AuthCubit>().getUserId() != "0") {
-     // getUserData();
-    }
-    super.initState();
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (context, _) => SafeArea(
@@ -49,6 +39,7 @@ class HomeScreenState extends State<HomeScreen> {
               backgroundColor: Colors.white,
               elevation: 2,
               iconTheme: const IconThemeData(color: adsBlueColor),
+              toolbarHeight: 65.h,
             ),
             drawer: Drawer(
               child: Column(
@@ -58,7 +49,18 @@ class HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("${widget.userModel.name}", style: TextStyle(fontSize: 30.sp, color: adsBlueColor),),
+                      CircleAvatar(
+                        radius: 60.sp,
+                        backgroundColor: adsIntermColor,
+                        child: Text("\u{1f468}", style: TextStyle(fontSize: 70.sp),),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10.h,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("${widget.userModel.name}", style: TextStyle(fontSize: 23.sp, color: adsBlueColor, fontWeight: FontWeight.bold),),
                     ],
                   ),
                   SizedBox(height: 50.h,),
@@ -76,11 +78,11 @@ class HomeScreenState extends State<HomeScreen> {
                          child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.edit, color: adsBlueColor,),
+                            const Icon(Icons.edit, color: adsBlueColor,),
                             SizedBox(width: 20.w,),
-                            Text("Edit profile", style: TextStyle(color: adsBlueColor),),
+                            const Text("Edit profile", style: TextStyle(color: adsBlueColor),),
                           ],
-                  ),
+                        ),
                        ),
                      ),
                    ),
@@ -89,14 +91,19 @@ class HomeScreenState extends State<HomeScreen> {
                      alignment: Alignment.centerLeft,
                      child: Padding(
                        padding: EdgeInsets.only(left: 20.w),
-                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.login_outlined, color: adsBlueColor,),
-                          SizedBox(width: 20.w,),
-                          Text("Logout", style: TextStyle(color: adsBlueColor),),
-                        ],
-                  ),
+                       child: GestureDetector(
+                         onTap: (){
+                           context.read<AuthCubit>().signOut(context: context);
+                         },
+                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.login_outlined, color: adsBlueColor,),
+                            SizedBox(width: 20.w,),
+                            const Text("Logout", style: TextStyle(color: adsBlueColor),),
+                            ],
+                          ),
+                       ),
                      ),
                    ),
                   Divider(color: adsBlueColor, indent: 20.w, height: 20.h,),
@@ -141,7 +148,7 @@ class HomeScreenState extends State<HomeScreen> {
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
-          side: BorderSide(color: adsBlueColor)
+          side: const BorderSide(color: adsBlueColor)
         ),
         color: Colors.white,
         child: ListTile(
@@ -152,8 +159,8 @@ class HomeScreenState extends State<HomeScreen> {
               VerticalDivider(color: adsBlueColor, thickness: 1.w,)
             ],
           ),
-          title: Text(displayName, style: TextStyle(color: adsBlueColor),),
-          subtitle: Text(address, style: TextStyle(color: adsBlueColor),),
+          title: Text(displayName, style: const TextStyle(color: adsBlueColor),),
+          subtitle: Text(address, style: const TextStyle(color: adsBlueColor),),
           trailing: IconButton(
               onPressed: () {
                 navigate();

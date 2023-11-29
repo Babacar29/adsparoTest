@@ -193,6 +193,17 @@ class _EditUserScreenState extends State<EditUserScreen> {
     super.initState();
   }
 
+  disposeAllTextController() {
+    phoneC!.dispose();
+    addressC!.dispose();
+    ethnicityC!.dispose();
+    ageC!.dispose();
+    zipC!.dispose();
+    countryC!.dispose();
+    sNameC!.dispose();
+    sEmailC!.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -203,11 +214,18 @@ class _EditUserScreenState extends State<EditUserScreen> {
           elevation: 2,
           iconTheme: const IconThemeData(color: adsBlueColor),
           automaticallyImplyLeading: true,
+          toolbarHeight: 65.h,
         ),
         body: SingleChildScrollView(
           child: showContent(),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    disposeAllTextController();
+    super.dispose();
   }
 }

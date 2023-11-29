@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adsparo_test/ui/screens/auth/loginScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -226,7 +227,9 @@ class AuthRemoteDataSource {
     return digest.toString();
   }
 
-  Future<void> signOut(AuthProvider? authProvider) async {
+  Future<void> signOut({required BuildContext context}) async {
+
     _firebaseAuth.signOut();
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
   }
 }
