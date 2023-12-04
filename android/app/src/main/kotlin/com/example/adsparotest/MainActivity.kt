@@ -1,4 +1,4 @@
-package com.example.adsparo_test
+package com.example.adsparotest
 
 import io.flutter.embedding.android.FlutterActivity
 

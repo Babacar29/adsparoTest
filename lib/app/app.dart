@@ -25,11 +25,10 @@ import '../utils/uiUtils.dart';
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await SharedPreferencesServices.init();
   HttpOverrides.global = MyHttpOverrides();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  await Firebase.initializeApp();
 
   //await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
 

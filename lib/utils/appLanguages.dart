@@ -66,7 +66,7 @@ const Map<String, dynamic> appEnglishLabelKeys = {
   "zipRequired": "zip code is Required",
   "ethnicityRequired": "ethnicity is Required",
   "emailValid": "Please enter a valid email Address!",
-  "phoneValid": "Please enter a valid phone number!",
+  "phoneValid": "Please enter a valid phone number! (avoid typing dial code)",
   "pwdRequired": "Password is Required",
   "confPassRequired": "Confirm Password is Required",
   "confPassNotMatch": "Confirm Password not match",
