@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adsparo_test/ui/screens/auth/loginScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ import '../../../utils/uiUtils.dart';
 class AuthRemoteDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<dynamic> loginAuth(
+  /*Future<dynamic> loginAuth(
       {required BuildContext context, required String firebaseId, required String name, required String email, required String type, required String profile, required String mobile}) async {
     try {
       final body = {FIREBASE_ID: firebaseId, NAME: name, TYPE: type, EMAIL: email};
@@ -31,7 +32,7 @@ class AuthRemoteDataSource {
     } catch (e) {
       throw ApiMessageAndCodeException(errorMessage: e.toString());
     }
-  }
+  }*/
 
   Future<dynamic> deleteUserAcc({required BuildContext context, required String userId}) async {
     try {
@@ -226,7 +227,9 @@ class AuthRemoteDataSource {
     return digest.toString();
   }
 
-  Future<void> signOut(AuthProvider? authProvider) async {
+  Future<void> signOut({required BuildContext context}) async {
+
     _firebaseAuth.signOut();
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
   }
 }

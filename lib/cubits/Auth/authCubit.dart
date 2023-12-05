@@ -52,10 +52,6 @@ class AuthCubit extends Cubit<AuthState> {
     return (state is Authenticated) ? (state as Authenticated).authModel.mobile! : "";
   }
 
-  String getType() {
-    return (state is Authenticated) ? (state as Authenticated).authModel.type! : "";
-  }
-
   String getStatus() {
     return (state is Authenticated) ? (state as Authenticated).authModel.status! : "";
   }
@@ -73,10 +69,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //to signOut
-  Future signOut(AuthProviders authProvider) async {
-    if (state is Authenticated) {
-      //_authRepository.signOut(authProvider);
-      emit(Unauthenticated());
-    }
+  Future signOut({required BuildContext context}) async {
+    _authRepository.signOut(context: context);
+    emit(Unauthenticated());
   }
 }

@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, deprecated_member_use, use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,6 @@ class LoginScreenState extends State<LoginScreen> with SingleTickerProviderState
 
   @override
   void initState() {
-
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
     assignAllTextController();
     _tabController!.addListener(() {
@@ -115,7 +113,6 @@ class LoginScreenState extends State<LoginScreen> with SingleTickerProviderState
   void dispose() {
     _tabController?.dispose();
     disposeAllTextController();
-
     super.dispose();
   }
 
@@ -293,15 +290,12 @@ class LoginScreenState extends State<LoginScreen> with SingleTickerProviderState
 
                               if (validateAndSave()) {
                                 if (await InternetConnectivity.isNetworkAvailable()) {
-                                  UserCredential? result = await  context.read<FirebaseAuthCubit>().registerUser(
+                                  await  context.read<FirebaseAuthCubit>().registerUser(
                                       email: sEmailC!.text.trim(), password: sPassC!.text,
-                                      context: context, name: sNameC!.text.trim(),
-                                  );
+                                      context: context, name: sNameC!.text.trim(),);
 
-                                  if(result?.user?.displayName != null){
-                                    _tabController?.animateTo(0);
-                                    FocusScope.of(context).requestFocus(emailFocus);
-                                  }
+                                  _tabController?.animateTo(0);
+                                  FocusScope.of(context).requestFocus(emailFocus);
                                 }
                                 else {
                                   showSnackBar(UiUtils.getTranslatedLabel(context, 'internetmsg'), context);
@@ -318,67 +312,6 @@ class LoginScreenState extends State<LoginScreen> with SingleTickerProviderState
           )),
     );
   }
-
-  /*registerWithEmailPassword(String email, String password) async {
-    try {
-      debugPrint("------------- here ----------------");
-      try{
-        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        debugPrint("cred =======>$credential");
-        User? user = credential.user;
-        user!.updateDisplayName(sNameC!.text.trim()).then((value) => debugPrint("updated name is - ${user.displayName}"));
-        user.reload();
-        user.sendEmailVerification().then((value) => showSnackBar('${UiUtils.getTranslatedLabel(context, 'verifSentMail')} $email', context));
-      }
-      catch (e) {
-        debugPrint("e =======> $e");
-      }
-
-      clearSignUpTextFields();
-      _tabController!.animateTo(0);
-      FocusScope.of(context).requestFocus(emailFocus);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weakPassword') {
-        showSnackBar(UiUtils.getTranslatedLabel(context, 'weakPassword'), context);
-      }
-      if (e.code == 'email-already-in-use') {
-        showSnackBar(UiUtils.getTranslatedLabel(context, 'emailAlreadyInUse'), context);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  loginIn(String email, String password) async {
-    try {
-      debugPrint("email =======>$email");
-      debugPrint("password =======>$password");
-        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-
-        User? user = credential.user;
-        debugPrint("user details =========>$user");
-      //clearSignUpTextFields();
-    } on FirebaseAuthException catch (e) {
-      debugPrint("e code ====>${e.code}");
-      if(e.code == 'INVALID_LOGIN_CREDENTIALS'){
-        showSnackBar(UiUtils.getTranslatedLabel(context, 'wrongCredentials'), context);
-      }
-      if (e.code == 'weakPassword') {
-        showSnackBar(UiUtils.getTranslatedLabel(context, 'weakPassword'), context);
-      }
-      if (e.code == 'email-already-in-use') {
-        showSnackBar(UiUtils.getTranslatedLabel(context, 'emailAlreadyInUse'), context);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }*/
 
   loginTxt() {
     return Align(
@@ -406,68 +339,6 @@ class LoginScreenState extends State<LoginScreen> with SingleTickerProviderState
           ),
         ));
   }
-
-  /*bottomBtn() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30),
-      child: Row(
-        mainAxisAlignment: (fblogInEnabled) ? MainAxisAlignment.spaceBetween : MainAxisAlignment.spaceAround,
-        children: [
-          BottomCommButton(
-              onTap: () {
-                if (!isPolicyAvailable) {
-                  showSnackBar(UiUtils.getTranslatedLabel(context, 'addTCFirst'), context);
-                } else if (isChecked) {
-                  //context.read<SocialSignUpCubit>().socialSignUpUser(authProvider: AuthProvider.gmail, context: context);
-                } else {
-                  showSnackBar(UiUtils.getTranslatedLabel(context, 'agreeTCFirst'), context);
-                }
-              },
-              img: 'google_button',
-              startPad: 0),
-          if (fblogInEnabled)
-            BottomCommButton(
-                onTap: () {
-                  if (!isPolicyAvailable) {
-                    showSnackBar(UiUtils.getTranslatedLabel(context, 'addTCFirst'), context);
-                  } else if (isChecked) {
-                    //context.read<SocialSignUpCubit>().socialSignUpUser(authProvider: AuthProvider.fb, context: context);
-                  } else {
-                    showSnackBar(UiUtils.getTranslatedLabel(context, 'agreeTCFirst'), context);
-                  }
-                },
-                img: 'facebook_button',
-                startPad: 10),
-          if (Platform.isIOS)
-            BottomCommButton(
-                onTap: () {
-                  if (!isPolicyAvailable) {
-                    showSnackBar(UiUtils.getTranslatedLabel(context, 'addTCFirst'), context);
-                  } else if (isChecked) {
-                    //context.read<SocialSignUpCubit>().socialSignUpUser(authProvider: AuthProvider.apple, context: context);
-                  } else {
-                    showSnackBar(UiUtils.getTranslatedLabel(context, 'agreeTCFirst'), context);
-                  }
-                },
-                img: 'apple_logo',
-                startPad: 10),
-          BottomCommButton(
-              onTap: () {
-                if (!isPolicyAvailable) {
-                  showSnackBar(UiUtils.getTranslatedLabel(context, 'addTCFirst'), context);
-                } else if (isChecked) {
-                  Navigator.of(context).pushNamed(Routes.requestOtp);
-                } else {
-                  showSnackBar(UiUtils.getTranslatedLabel(context, 'agreeTCFirst'), context);
-                }
-              },
-              img: 'phone_button',
-              startPad: 10,
-              btnColor: UiUtils.getColorScheme(context).secondaryContainer)
-        ],
-      ),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {

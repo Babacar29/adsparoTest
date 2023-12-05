@@ -8,12 +8,11 @@ class AuthModel {
   String? email;
   String? mobile;
   String? profile;
-  String? type;
   String? status;
   String? isFirstLogin;
   String? role;
 
-  AuthModel({this.id, this.name, this.email, this.mobile, this.profile, this.type, this.status, this.isFirstLogin, this.role});
+  AuthModel({this.id, this.name, this.email, this.mobile, this.profile, this.status, this.isFirstLogin, this.role});
 
   AuthModel.fromJson(Map<String, dynamic> json) {
     id = json[ID] ?? "";
@@ -21,7 +20,6 @@ class AuthModel {
     email = json[EMAIL] ?? "";
     mobile = json[MOBILE] ?? "";
     profile = json[PROFILE] ?? "";
-    type = json[TYPE] ?? "";
     status = json[STATUS] ?? "";
     isFirstLogin = json[IS_LOGIN] ?? "";
     role = json[ROLE] ?? "";

@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../app/routes.dart';
-import '../cubits/Auth/authCubit.dart';
 import '../cubits/languageJsonCubit.dart';
 import '../ui/styles/appTheme.dart';
 import '../ui/styles/colors.dart';
@@ -56,16 +54,14 @@ class UiUtils {
             SystemUiOverlayStyle(statusBarColor: darkSecondaryColor.withOpacity(0.8), statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.light));
   }
 
-  static userLogOut({required BuildContext contxt}) {
+  /*static userLogOut({required BuildContext contxt}) {
 
     for (int i = 0; i < AuthProviders.values.length; i++) {
-      if (AuthProviders.values[i].name == contxt.read<AuthCubit>().getType()) {
-        contxt.read<AuthCubit>().signOut(AuthProviders.values[i]).then((value) {
-          Navigator.of(contxt).pushNamedAndRemoveUntil(Routes.login, (route) => false);
-        });
-      }
+      contxt.read<AuthCubit>().signOut(AuthProviders.values[i]).then((value) {
+        Navigator.of(contxt).pushNamedAndRemoveUntil(Routes.login, (route) => false);
+      });
     }
-  }
+  }*/
 
 //widget for User Profile Picture in Comments
   static Widget setFixedSizeboxForProfilePicture({required Widget childWidget}) {

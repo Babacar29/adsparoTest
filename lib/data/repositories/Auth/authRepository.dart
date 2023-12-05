@@ -68,7 +68,7 @@ class AuthRepository {
     return result;
   }
 
-  Future<void> signOut(AuthProvider authProvider) async {
-    _authRemoteDataSource.signOut(authProvider);
+  Future<void> signOut({required BuildContext context}) async {
+    _authRemoteDataSource.signOut(context: context);
   }
 }

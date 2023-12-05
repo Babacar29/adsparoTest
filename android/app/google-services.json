@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "609036091612",
+    "firebase_url": "https://adsparotest-default-rtdb.firebaseio.com",
     "project_id": "adsparotest",
     "storage_bucket": "adsparotest.appspot.com"
   },
